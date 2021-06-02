@@ -3,6 +3,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:flutter/rendering.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:math' as math;
 
 void main() {
   runApp(MyApp());
@@ -22,20 +23,36 @@ class MyApp extends StatelessWidget {
   }
 }
 
-void getPanelPosition(double x, BuildContext context) async {
-  print("x = $x");
-  if (x == 1.0) {
-    await Flushbar(
-      duration: Duration(seconds: 1),
-      title: "Предельное значение!",
-      message: "Край экрана достигнут",
-      // message:"Желаемый веc",
-    ).show(context);
-  }
+class MainPage extends StatefulWidget {
+  const MainPage({Key key}) : super(key: key);
+
+  @override
+  _MainPageState createState() => _MainPageState();
 }
 
-class MainPage extends StatelessWidget {
-  const MainPage({Key key}) : super(key: key);
+class _MainPageState extends State<MainPage> {
+  void getPanelPosition(double x, BuildContext context) async {
+    print("x = $x");
+    setState(() {
+      angle = x;
+    });
+    if (x == 1.0) {
+      await Flushbar(
+        duration: Duration(seconds: 1),
+        title: "Предельное значение!",
+        message: "Край экрана достигнут",
+        // message:"Желаемый веc",
+      ).show(context);
+    }
+  }
+
+  double angle = 0.1;
+
+  @override
+  void initState() {
+    angle = 0.7;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +62,14 @@ class MainPage extends StatelessWidget {
         body: Stack(
           children: <Widget>[
             Center(
-              child: SvgPicture.asset(
-                'assets/circle.svg',
-                width: MediaQuery.of(context).size.width / 2,
-                height: MediaQuery.of(context).size.height / 2,
-                color: Colors.black,
+              child: Transform.rotate(
+                angle: math.pi * angle,
+                child: SvgPicture.asset(
+                  'assets/circle.svg',
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: MediaQuery.of(context).size.height / 2,
+                  color: Colors.black,
+                ),
               ),
             ),
             SlidingUpPanel(
