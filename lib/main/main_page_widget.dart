@@ -58,7 +58,7 @@ class _MainPageState extends State<MainPage> {
       }
     }
 
-    // debugRepaintRainbowEnabled = true;
+    debugRepaintRainbowEnabled = true;
     return SafeArea(
       child: Scaffold(
         body: Stack(
