@@ -35,10 +35,13 @@ class _ElementPageState extends State<ElementPage> {
 
     int index = controllerGetx.index;
     print("length = ${controllerGetx.length}");
-    int length = controllerGetx.length + 1;
+    String length = (controllerGetx.length + 1).toString();
 
-    Pattern regPattern = r'[0-2]';
-    RegExp regExp = new RegExp(regPattern);
+    // Pattern regPattern = '[0-$length]';
+    // RegExp regExp = new RegExp(r'/[0-' + length.toString() + r']/');
+    // RegExp regExp = new RegExp('[0-3]');
+    // Pattern pattern = r"[0-" + length + r"]";
+    // RegExp regExp = new RegExp('[0-10]');
 
     return SafeArea(
       child: Scaffold(
@@ -53,20 +56,25 @@ class _ElementPageState extends State<ElementPage> {
                   autofocus: true,
                   focusNode: focusNode,
                   inputFormatters: [
-                    // FilteringTextInputFormatter.allow(RegExp(regPattern)),
+                    FilteringTextInputFormatter.digitsOnly,
+                    // FilteringTextInputFormatter.allow(RegExp(pattern)),
                     // LengthLimitingTextInputFormatter(length),
                   ],
                   validator: (value) {
                     if (value.isEmpty) {
                       return "Введите значение";
                     }
-                    if (regExp.hasMatch(value)) {
-                      print("value = $value");
-                      print("reg = ${regExp.pattern}");
-                      return null;
-                    } else {
-                      return ("Неверное значение");
-                    }
+                    return null;
+                    // if (regExp.hasMatch(value)) {
+                    //   print("value = $value");
+                    //   print("reg = ${regExp.pattern}");
+                    //   print("ok");
+                    //   return null;
+                    // } else {
+                    //   print("value = $value");
+                    //   print("reg = ${regExp.pattern}");
+                    //   return ("Неверное значение");
+                    // }
                   },
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(

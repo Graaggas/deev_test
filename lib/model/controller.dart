@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 class ContainerCardController extends GetxController {
   var tappedIndex = 0.obs;
 
+  var angle = 0.0.obs;
+
   List<ContainerCard> _listContainers = [
     ContainerCard(color: Colors.grey),
     ContainerCard(color: Colors.grey),
@@ -16,6 +18,11 @@ class ContainerCardController extends GetxController {
     ContainerCard(color: Colors.grey),
     ContainerCard(color: Colors.grey),
   ];
+
+  void setAngle(double ang) {
+    angle.value = ang;
+    update();
+  }
 
   int getIndex() {
     var resp = tappedIndex.value;
