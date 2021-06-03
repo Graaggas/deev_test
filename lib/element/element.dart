@@ -13,6 +13,7 @@ class ElementPage extends StatefulWidget {
 class _ElementPageState extends State<ElementPage> {
   FocusNode focusNode;
   final textController = TextEditingController();
+  static GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -32,36 +33,66 @@ class _ElementPageState extends State<ElementPage> {
     ContainerCardController controllerGetx = Get.find();
     textController.text = controllerGetx.getIndex().toString();
 
+    int index = controllerGetx.index;
+    print("length = ${controllerGetx.length}");
+    int length = controllerGetx.length + 1;
+
+    Pattern regPattern = r'[0-2]';
+    RegExp regExp = new RegExp(regPattern);
+
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(32.0),
-              child: TextFormField(
-                controller: textController,
-                autofocus: true,
-                focusNode: focusNode,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r"^\d+\.?\d{0,1}")),
-                  LengthLimitingTextInputFormatter(2),
-                ],
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white, width: 0),
+              child: Form(
+                key: _formKey,
+                child: TextFormField(
+                  controller: textController,
+                  autofocus: true,
+                  focusNode: focusNode,
+                  inputFormatters: [
+                    // FilteringTextInputFormatter.allow(RegExp(regPattern)),
+                    // LengthLimitingTextInputFormatter(length),
+                  ],
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return "Введите значение";
+                    }
+                    if (regExp.hasMatch(value)) {
+                      print("value = $value");
+                      print("reg = ${regExp.pattern}");
+                      return null;
+                    } else {
+                      return ("Неверное значение");
+                    }
+                  },
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 0),
+                    ),
+                    focusColor: Colors.blue,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    fillColor: Colors.green[300],
+                    filled: true,
                   ),
-                  focusColor: Colors.blue,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  fillColor: Colors.green[300],
-                  filled: true,
                 ),
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  print("kk");
+                }
+
+                FocusScope.of(context).unfocus();
+                controllerGetx.updateCard(index);
+                Get.offAllNamed("/");
+              },
               child: Text("SAVE"),
             ),
           ],

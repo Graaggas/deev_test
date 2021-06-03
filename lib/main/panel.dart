@@ -1,13 +1,14 @@
 import 'package:deev_test/element/element.dart';
 import 'package:deev_test/main/containers.dart';
 import 'package:deev_test/model/controller.dart';
-import 'package:deev_test/model/fake_data.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 SlidingUpPanel buildSlidingUpPanel(BuildContext context, Function getPos) {
   ContainerCardController controllerGetx = Get.find();
+  var listContainers = controllerGetx.listContainer;
   return SlidingUpPanel(
     backdropEnabled: false,
     backdropTapClosesPanel: false,
