@@ -1,6 +1,5 @@
 import 'package:deev_test/element/element.dart';
 import 'package:deev_test/main/containers.dart';
-import 'package:deev_test/main/panel.dart';
 import 'package:deev_test/model/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,6 +47,13 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  ScrollController _scrollController = new ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void getPanelPosition(double x, BuildContext context) async {
     print("x = $x");
     setState(() {
@@ -69,6 +75,15 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     ContainerCardController controllerGetx = Get.find();
     var listContainers = controllerGetx.listContainer;
+
+    for (int i = 0; i < listContainers.length; i++) {
+      if (i == controllerGetx.getIndex()) {
+        _scrollController.animateTo(i * 70.0,
+            duration: new Duration(seconds: 2), curve: Curves.ease);
+        break;
+      }
+    }
+
     // debugRepaintRainbowEnabled = true;
     return SafeArea(
       child: Scaffold(
@@ -110,6 +125,7 @@ class _MainPageState extends State<MainPage> {
                     Container(
                       height: 100,
                       child: ListView.builder(
+                          controller: _scrollController,
                           scrollDirection: Axis.horizontal,
                           itemCount: listContainers.length,
                           itemBuilder: (context, index) {
